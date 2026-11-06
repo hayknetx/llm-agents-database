@@ -13,7 +13,6 @@ and every tool call is stored in the database.
 | `LLM_Agent_Platform_Database.pdf` | The assignment: tables, relationships, constraints, sample data and required queries |
 | `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: creates the tables, adds the constraints, inserts the sample data, runs 15 queries |
 | `LLM_Agent_Platform_ER_Diagram.png` / `.webp` | The ER diagram |
-| `diagram_and_pdf_sources/` | HTML sources used to make the diagram and the PDF |
 
 ## Tables
 
