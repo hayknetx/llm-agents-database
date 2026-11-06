@@ -11,7 +11,7 @@ and every tool call is stored in the database.
 | File | What it is |
 |---|---|
 | `LLM_Agent_Platform_Database.pdf` | The assignment: tables, relationships, constraints, sample data and required queries |
-| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: creates the tables, adds the constraints, inserts the sample data, runs 15 queries |
+| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: creates the tables with their constraints, inserts the sample data, runs 15 queries |
 | `LLM_Agent_Platform_ER_Diagram.png` / `.webp` | The ER diagram |
 
 ## Tables
@@ -35,5 +35,3 @@ Oracle Live SQL or SQL\*Plus). It was tested on Oracle Database 23ai Free: all
 statements run without errors, and invalid rows (duplicate email, temperature 3,
 unknown tool type, end time before start time and so on) are rejected by the
 constraints.
-
-To start again, uncomment the `DROP TABLE` lines at the end of the file.
