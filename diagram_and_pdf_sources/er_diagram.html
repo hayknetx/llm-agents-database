@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>LLM Agent Platform ER Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 2140px; height: 1050px; position: relative; overflow: hidden;
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    background-color: #f6f6f6;
+    background-image: radial-gradient(#cfcfd4 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .title { position: absolute; left: 60px; top: 30px; font-size: 30px; font-weight: 700; color: #33384a; letter-spacing: .5px; }
+  .subtitle { position: absolute; left: 60px; top: 72px; font-size: 17px; color: #7a8094; }
+  .card {
+    position: absolute; width: 400px; background: #fff; border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 4px 14px rgba(0,0,0,.06);
+    border-top: 4px solid var(--c); overflow: hidden;
+  }
+  .card h2 {
+    margin: 0; padding: 14px 0; text-align: center; font-size: 22px; font-weight: 700;
+    color: var(--c-dark); background: var(--c-soft); letter-spacing: .3px;
+  }
+  .rows { padding: 6px 0 8px; }
+  .row { display: flex; align-items: center; height: 37.5px; padding: 0 16px 0 18px; font-size: 18px; color: #3a3f50; }
+  .row .icon { width: 18px; margin-right: 8px; color: #8a8fa0; font-size: 14px; display: flex; justify-content: center; }
+  .row .name { flex: 1; letter-spacing: .2px; }
+  .row.pk .name { font-weight: 700; color: #2a2f40; }
+  .row .type { color: #9aa0b2; font-size: 17px; }
+  .legend {
+    position: absolute; right: 60px; top: 24px; background: #fff; border-radius: 6px; padding: 14px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12); font-size: 16px; color: #555b6e; line-height: 1.9;
+  }
+  .legend b { color: #33384a; }
+  svg#lines { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="title">LLM AGENT PLATFORM DATABASE</div>
+<div class="subtitle">Entity–relationship diagram · 7 tables · Oracle SQL</div>
+<svg id="lines"></svg>
+<div id="cards"></div>
+<div class="legend">
+  <div><span id="legendkey" style="vertical-align:-2px"></span>&nbsp; primary key &nbsp;&nbsp; <b>✱</b>&nbsp; unique &nbsp;&nbsp; <b>type?</b>&nbsp; nullable</div>
+  <div><svg width="60" height="18" style="vertical-align:middle"><path d="M0 9 H60 M44 9 L60 1 M44 9 L60 17" stroke="#8d8d94" stroke-width="2" fill="none"/></svg>&nbsp; one-to-many (the forked end is "many")</div>
+</div>
+
+<script>
+const KEY = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8a8fa0" stroke-width="2.4" stroke-linecap="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 21 2M17 6l3 3M14.5 8.5l2.5 2.5"/></svg>';
+const UQ = '✱';
+
+// name, x, y, color, soft, dark, columns [name, type, flag]   flag: pk | uq | ''
+const tables = [
+  ['USERS', 60, 150, '#e45f8c', '#fde8ef', '#9c3a62', [
+    ['USER_ID', 'number', 'pk'], ['FIRST_NAME', 'varchar2(30)?', ''], ['LAST_NAME', 'varchar2(30)?', ''],
+    ['EMAIL', 'varchar2(255)', 'uq'], ['REGISTRATION_DATE', 'date?', '']]],
+  ['MODELS', 60, 680, '#3fb2a5', '#e2f5f2', '#24766c', [
+    ['MODEL_ID', 'number', 'pk'], ['MODEL_NAME', 'varchar2(50)', 'uq'], ['PROVIDER', 'varchar2(50)', ''],
+    ['CONTEXT_WINDOW', 'number?', ''], ['INPUT_PRICE', 'number(10,2)?', ''], ['OUTPUT_PRICE', 'number(10,2)?', '']]],
+  ['AGENTS', 620, 380, '#4a90d9', '#e1eefa', '#24578f', [
+    ['AGENT_ID', 'number', 'pk'], ['USER_ID', 'number', ''], ['MODEL_ID', 'number', ''],
+    ['AGENT_NAME', 'varchar2(50)', ''], ['SYSTEM_PROMPT', 'varchar2(1000)?', ''], ['TEMPERATURE', 'number(3,2)?', ''],
+    ['CREATED_DATE', 'date?', '']]],
+  ['AGENT_TOOLS', 1150, 150, '#9a6ad6', '#efe6fb', '#5f3a91', [
+    ['AGENT_ID', 'number', 'pk'], ['TOOL_ID', 'number', 'pk']]],
+  ['RUNS', 1150, 560, '#e8a33d', '#fdf1de', '#94621a', [
+    ['RUN_ID', 'number', 'pk'], ['AGENT_ID', 'number', ''], ['TASK_DESCRIPTION', 'varchar2(500)', ''],
+    ['START_TIME', 'timestamp', ''], ['END_TIME', 'timestamp?', ''], ['STATUS', 'varchar2(20)?', ''],
+    ['INPUT_TOKENS', 'number?', ''], ['OUTPUT_TOKENS', 'number?', '']]],
+  ['TOOLS', 1680, 150, '#6a78d1', '#e6e8f8', '#3b468f', [
+    ['TOOL_ID', 'number', 'pk'], ['TOOL_NAME', 'varchar2(50)', 'uq'], ['DESCRIPTION', 'varchar2(255)?', ''],
+    ['TOOL_TYPE', 'varchar2(20)?', '']]],
+  ['TOOL_CALLS', 1680, 640, '#d9634f', '#fbe7e3', '#8f3a2b', [
+    ['CALL_ID', 'number', 'pk'], ['RUN_ID', 'number', ''], ['TOOL_ID', 'number', ''],
+    ['CALL_TIME', 'timestamp?', ''], ['CALL_INPUT', 'varchar2(500)?', ''], ['DURATION_MS', 'number?', ''],
+    ['CALL_STATUS', 'varchar2(20)?', '']]],
+];
+
+document.getElementById('legendkey').innerHTML = KEY;
+const cards = document.getElementById('cards');
+for (const [name, x, y, c, soft, dark, cols] of tables) {
+  const el = document.createElement('div');
+  el.className = 'card'; el.id = 't_' + name;
+  el.style.left = x + 'px'; el.style.top = y + 'px';
+  el.style.setProperty('--c', c); el.style.setProperty('--c-soft', soft); el.style.setProperty('--c-dark', dark);
+  el.innerHTML = '<h2>' + name + '</h2><div class="rows">' + cols.map(([n, t, f]) =>
+    `<div class="row ${f}" id="c_${name}_${n}"><span class="icon">${f === 'pk' ? KEY : f === 'uq' ? UQ : ''}</span>` +
+    `<span class="name">${n}</span><span class="type">${t}</span></div>`).join('') + '</div>';
+  cards.appendChild(el);
+}
+
+// [oneTable, oneCol, oneSide, manyTable, manyCol, manySide, bendX (optional)]
+const rels = [
+  ['USERS', 'USER_ID', 'R', 'AGENTS', 'USER_ID', 'L'],
+  ['MODELS', 'MODEL_ID', 'R', 'AGENTS', 'MODEL_ID', 'L'],
+  ['AGENTS', 'AGENT_ID', 'R', 'AGENT_TOOLS', 'AGENT_ID', 'L', 1090],
+  ['AGENTS', 'AGENT_ID', 'R', 'RUNS', 'AGENT_ID', 'L', 1090],
+  ['TOOLS', 'TOOL_ID', 'L', 'AGENT_TOOLS', 'TOOL_ID', 'R'],
+  ['RUNS', 'RUN_ID', 'R', 'TOOL_CALLS', 'RUN_ID', 'L'],
+  ['TOOLS', 'TOOL_ID', 'R', 'TOOL_CALLS', 'TOOL_ID', 'R', 2120],
+];
+
+const svg = document.getElementById('lines');
+const STROKE = '#8d8d94';
+function anchor(t, c, side) {
+  const r = document.getElementById(`c_${t}_${c}`).getBoundingClientRect();
+  return { x: side === 'L' ? r.left : r.right, y: r.top + r.height / 2 };
+}
+function path(d, w = 2.2) {
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  p.setAttribute('d', d); p.setAttribute('stroke', STROKE); p.setAttribute('stroke-width', w);
+  p.setAttribute('fill', 'none'); p.setAttribute('stroke-linejoin', 'round'); svg.appendChild(p);
+}
+function elbow(a, b, bx) {
+  // orthogonal route a -> (bx, a.y) -> (bx, b.y) -> b with rounded corners
+  const r = Math.min(14, Math.abs(b.y - a.y) / 2);
+  if (r < 1) return `M${a.x} ${a.y} H${b.x}`;
+  const sx = Math.sign(bx - a.x) || 1, sy = Math.sign(b.y - a.y), ex = Math.sign(b.x - bx) || -sx;
+  return `M${a.x} ${a.y} H${bx - sx * r} Q${bx} ${a.y} ${bx} ${a.y + sy * r}` +
+         ` V${b.y - sy * r} Q${bx} ${b.y} ${bx + ex * r} ${b.y} H${b.x}`;
+}
+for (const [t1, c1, s1, t2, c2, s2, bend] of rels) {
+  const a = anchor(t1, c1, s1), b = anchor(t2, c2, s2);
+  const bx = bend ?? (a.x + b.x) / 2;
+  path(elbow(a, b, bx));
+  // crow's foot on the "many" end
+  const dir = s2 === 'L' ? -1 : 1;           // direction pointing away from the card
+  const fx = b.x + dir * 18;
+  path(`M${fx} ${b.y} L${b.x} ${b.y - 9} M${fx} ${b.y} L${b.x} ${b.y + 9} M${fx} ${b.y} L${b.x} ${b.y}`);
+  // single bar on the "one" end
+  const ox = a.x + (s1 === 'L' ? -12 : 12);
+  path(`M${ox} ${a.y - 9} V${a.y + 9}`);
+}
+</script>
+</body>
+</html>
