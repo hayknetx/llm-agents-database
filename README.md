@@ -11,20 +11,20 @@ and every tool call is stored in the database.
 | File | What it is |
 |---|---|
 | `LLM_Agent_Platform_Database.pdf` | The assignment: tables, relationships, constraints, sample data and required queries |
-| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: creates the tables with their constraints, inserts the sample data, runs 15 queries |
+| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: creates the tables with their constraints, inserts the sample data, runs 10 queries |
 | `LLM_Agent_Platform_ER_Diagram.png` / `.webp` | The ER diagram |
 
 ## Tables
 
 | Table | Rows | Holds |
 |---|---|---|
-| `USERS` | 5 | People who use the platform |
-| `MODELS` | 4 | Language models with their prices per 1M tokens |
-| `AGENTS` | 6 | Agents: owner, model, system prompt, temperature |
-| `TOOLS` | 6 | Tools agents can use (search, code, database, API, file) |
-| `AGENT_TOOLS` | 12 | Which agent may use which tool (many-to-many) |
-| `RUNS` | 10 | Each task given to an agent, with status and token counts |
-| `TOOL_CALLS` | 15 | Each tool call made during a run |
+| `USERS` | 2 | People who use the platform |
+| `MODELS` | 2 | Language models with their prices per 1M tokens |
+| `AGENTS` | 3 | Agents: owner, model, system prompt, temperature |
+| `TOOLS` | 3 | Tools agents can use (search, code, database, API, file) |
+| `AGENT_TOOLS` | 4 | Which agent may use which tool (many-to-many) |
+| `RUNS` | 4 | Each task given to an agent, with status and token counts |
+| `TOOL_CALLS` | 5 | Each tool call made during a run |
 
 Model names, providers and prices are made up.
 
