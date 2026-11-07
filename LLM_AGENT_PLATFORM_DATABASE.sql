@@ -40,7 +40,5 @@ SELECT * FROM USERS;
 SELECT * FROM MODELS WHERE PRICE < 10;
 -- 3. Failed runs
 SELECT * FROM RUNS WHERE STATUS = 'FAILED';
--- 4. Number of runs and total tokens for each agent
-SELECT AGENT_ID, COUNT(*) AS RUN_COUNT, SUM(TOKENS) AS TOTAL_TOKENS FROM RUNS GROUP BY AGENT_ID;
--- 5. Tool calls that ended with an error
+-- 4. Tool calls that ended with an error
 SELECT * FROM TOOL_CALLS WHERE STATUS = 'ERROR';
