@@ -1,8 +1,7 @@
 # LLM Agent Platform Database
 
 An SQL assignment and its solution (Oracle SQL). Users build AI agents on top of
-large language models, give the agents tools, and run them on tasks. Every run
-and every tool call is stored in the database.
+large language models, give the agents tools, and run them on tasks.
 
 ![ER diagram](LLM_Agent_Platform_ER_Diagram.png)
 
@@ -11,27 +10,24 @@ and every tool call is stored in the database.
 | File | What it is |
 |---|---|
 | `LLM_Agent_Platform_Database.pdf` | The assignment: tables, relationships, constraints, sample data and required queries |
-| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: creates the tables with their constraints, inserts the sample data, runs 10 queries |
+| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: 7 tables, sample data and 5 queries in 50 lines |
 | `LLM_Agent_Platform_ER_Diagram.png` / `.webp` | The ER diagram |
 
 ## Tables
 
-| Table | Rows | Holds |
-|---|---|---|
-| `USERS` | 2 | People who use the platform |
-| `MODELS` | 2 | Language models with their prices per 1M tokens |
-| `AGENTS` | 3 | Agents: owner, model, system prompt, temperature |
-| `TOOLS` | 3 | Tools agents can use (search, code, database, API, file) |
-| `AGENT_TOOLS` | 4 | Which agent may use which tool (many-to-many) |
-| `RUNS` | 4 | Each task given to an agent, with status and token counts |
-| `TOOL_CALLS` | 5 | Each tool call made during a run |
+| Table | Holds |
+|---|---|
+| `USERS` | People who use the platform |
+| `MODELS` | Language models and their price per 1M tokens |
+| `AGENTS` | Agents, with their owner and model |
+| `TOOLS` | Tools agents can use |
+| `AGENT_TOOLS` | Which agent may use which tool (many-to-many) |
+| `RUNS` | Each task given to an agent |
+| `TOOL_CALLS` | Each tool call made during a run |
 
-Model names, providers and prices are made up.
+Model names and prices are made up.
 
 ## How to run
 
 Run `LLM_AGENT_PLATFORM_DATABASE.sql` from top to bottom in Oracle (SQL Developer,
-Oracle Live SQL or SQL\*Plus). It was tested on Oracle Database 23ai Free: all
-statements run without errors, and invalid rows (duplicate email, temperature 3,
-unknown tool type, end time before start time and so on) are rejected by the
-constraints.
+Oracle Live SQL or SQL\*Plus). It was tested on Oracle Database 23ai Free.
