@@ -10,7 +10,7 @@ large language models, give the agents tools, and run them on tasks.
 | File | What it is |
 |---|---|
 | `LLM_Agent_Platform_Database.pdf` | The assignment: tables, relationships, constraints, sample data and required queries |
-| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: 7 tables, sample data and 5 queries in 50 lines |
+| `LLM_AGENT_PLATFORM_DATABASE.sql` | The solution: 7 tables, sample data and 5 simple queries in 46 lines |
 | `LLM_Agent_Platform_ER_Diagram.png` / `.webp` | The ER diagram |
 
 ## Tables
